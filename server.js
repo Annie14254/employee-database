@@ -232,7 +232,8 @@ async function updateEmployee(){
     ]) 
     .then(async answers => {
         await db.promise().query(`UPDATE employee SET role_id = ${answers.employeerole_id} WHERE id = ${answers.employee_id}`)
-        console.log("Employee Role Updated")
+        console.log("Employee Role Updated");
+        displayMainQuestions();
     })
     .catch(err  =>
     {
