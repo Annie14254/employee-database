@@ -55,7 +55,7 @@ function displayMainQuestions(){
                 updateEmployee();
                 break;
             case "Exit":
-                return;
+                process.exit();
         }   
     })
 }
