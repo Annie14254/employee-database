@@ -31,21 +31,28 @@ const questionsList = [
 function displayMainQuestions(){
     inquirer.prompt(questionsList)
     .then (answers => {
-        switch(answers){
+        switch(answers.mainquestions){
             case "View All Departments":
                 viewAllDepartments();
+                break;
             case "View All Roles":
                 viewAllRoles();
+                break;
             case "View All Employees":
                 viewAllEmployees();
+                break;
             case "Add a Department":
                 addDepartment();
+                break;
             case "Add a Role":
                 addRole();
+                break;
             case "Add a Employee":
                 addEmployee();
+                break;
             case "Update an Employee Role":
                 updateEmployee();
+                break;
             case "Exit":
                 return;
         }   
@@ -57,10 +64,10 @@ function viewAllDepartments(){
     db.query("SELECT department.id AS id, department.name FROM department", (err, data) =>
     {
         if (err){
-            res.status(400).json({error: err.message})
+            console.log(err);
             return;
         };
-        data: data;
+        console.log(data)
         displayMainQuestions();
     })
 }
@@ -70,10 +77,10 @@ function viewAllRoles(){
     db.query("SELECT role.id AS id, role.title, department.name FROM role INNER JOIN department ON role.department_id = department.id", (err, data) =>
     {
         if (err){
-            res.status(400).json({error: err.message})
+            console.log(err);
             return;
         };
-        data: data;
+        console.log(data)
         displayMainQuestions();
     })
 }
@@ -83,10 +90,10 @@ function viewAllEmployees(){
     db.query("SELECT employee.id AS id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary FROM employee, role, department WHERE department.id = role.department_id AND role.id = employee.role_id", (err, data) =>
     {
         if (err){
-            res.status(400).json({error: err.message})
+            console.log(err);
             return;
         };
-        data: data;
+        console.log(data)
         displayMainQuestions();
     })
 }
@@ -109,23 +116,49 @@ function addDepartment(){
     ,(err, data) =>
     {
         if (err){
-            res.status(400).json({error: err.message})
+            console.log(err);
             return;
         };
-        data: data;
+        console.log(data);
         displayMainQuestions();
     })
 }
 
 // add a role
 function addRole(){
-    db.query("", (err, data) =>
+    db.query("INSERT INTO role (title, salary, department_id) VALUES (?)",  
+    
+    
+    inquirer.prompt([
+        {
+            name: "roletitle",
+            message: "What is the title of the new role?",
+            type: "input"
+        },
+        {
+            name: "rolesalary",
+            message: "What is the salary of the new role?",
+            type: "input"
+        },
+        {
+            name: "roledept_id",
+            message: "What is the department of the new role?",
+            type: "rawList",
+            choices: function(){
+                return departments.map(item => ({id: item.id, name: item.name}))
+            }
+        }
+    ]) 
+    .then(answers => {
+        return;
+    })
+    ,(err, data) =>
     {
         if (err){
-            res.status(400).json({error: err.message})
+            console.log(err);
             return;
         };
-        data: data;
+        console.log(data);
         displayMainQuestions();
     })
 }
@@ -134,10 +167,10 @@ function addEmployee(){
     db.query("", (err, data) =>
     {
         if (err){
-            res.status(400).json({error: err.message})
+            console.log(err);
             return;
         };
-        data: data;
+        console.log(data);
         displayMainQuestions();
     })
 }
@@ -147,7 +180,7 @@ function updateEmployee(){
     db.query("", (err, data) =>
     {
         if (err){
-            res.status(400).json({error: err.message})
+            console.log(err);
             return;
         };
         data: data;
