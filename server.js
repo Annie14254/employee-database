@@ -88,7 +88,7 @@ function viewAllRoles(){
 
 // view employees
 function viewAllEmployees(){
-    db.query("SELECT employee.id AS id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary FROM employee, role, department WHERE department.id = role.department_id AND role.id = employee.role_id", (err, data) =>
+    db.query("SELECT employee.id AS id, employee.first_name, employee.last_name, role.title, employee.manager_id, department.name AS department, role.salary FROM employee, role, department WHERE department.id = role.department_id AND role.id = employee.role_id", (err, data) =>
     {
         if (err){
             console.log(err);
